@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import laptop.management.dao.LaptopDAO;
 import laptop.model.brand;
@@ -49,6 +50,7 @@ public class AdminServlet extends HttpServlet {
 		String update = request.getParameter("update");
 		String delete = request.getParameter("delete");
 		String add = request.getParameter("add");
+		String logout = request.getParameter("logout");
 		request.setAttribute("add", add);
 		if (update != null) {
 			int id = Integer.parseInt(request.getParameter("id"));
@@ -69,6 +71,22 @@ public class AdminServlet extends HttpServlet {
 			request.setAttribute("types", types);
 
 			RequestDispatcher dispatcher = request.getRequestDispatcher("product-form.jsp");
+			dispatcher.forward(request, response);
+		} else if (logout != null) {
+			HttpSession session = request.getSession();
+			session.setAttribute("admin", null);
+			List<product> listProduct1 = laptopDAO.selectProductByType("SCHOOL OFFICE");
+			List<product> listProduct2 = laptopDAO.selectProductByType("GRAPHICS DESIGN");
+			List<product> listProduct3 = laptopDAO.selectProductByType("GAMING");
+			List<product> listProduct4 = laptopDAO.selectProductByType("OLD");
+			List<product> listProduct5 = laptopDAO.selectProductByType("DELUXE");
+
+			request.setAttribute("listProduct1", listProduct1);
+			request.setAttribute("listProduct2", listProduct2);
+			request.setAttribute("listProduct3", listProduct3);
+			request.setAttribute("listProduct4", listProduct4);
+			request.setAttribute("listProduct5", listProduct5);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 			dispatcher.forward(request, response);
 		} else {
 			int id = Integer.parseInt(request.getParameter("id"));

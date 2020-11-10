@@ -40,6 +40,9 @@
 					</a> <a href="admin?add=true">
 						<button class="btn btn-danger">ADD</button>
 					</a>
+					<a href="admin?logout=true">
+						<button class="btn btn-warning">LOG OUT</button>
+					</a>
 					<h3 style="color: white;text-align: center;margin-bottom: 20px">${message }</h3>
 					<table>
 						<thead>

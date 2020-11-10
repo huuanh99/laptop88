@@ -30,7 +30,7 @@ public class LaptopDAO {
 	private static final String INSERT_ORDER_SQL = "INSERT INTO product_payment" + "  (productId,paymentId,quantity)"
 			+ " VALUES " + " (? , ? , ? );";
 
-	private static final String SELECT_LAPTOP_BY_NAME = "select * from product where name LIKE %?%";
+	private static final String SELECT_LAPTOP_BY_NAME = "select * from product where lower(name) LIKE ?";
 	private static final String SELECT_LAPTOP_BY_TYPE = "select * from product where type=?";
 	private static final String SELECT_LAPTOP_BY_ID = "select * from product where id =?";
 	private static final String SELECT_ALL_LAPTOP = "select * from product";
@@ -180,13 +180,13 @@ public class LaptopDAO {
 		return id;
 	}
 
-	public product selectProductByName(String name) {
-		product product = null;
+	public List<product> selectProductByName(String search) {
+		List<product> product = new ArrayList<product>();
 		// Step 1: Establishing a Connection
 		try (Connection connection = getConnection();
 				// Step 2:Create a statement using connection object
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_LAPTOP_BY_NAME);) {
-			preparedStatement.setString(1, name);
+			preparedStatement.setString(1, search);
 			System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
@@ -194,6 +194,7 @@ public class LaptopDAO {
 			// Step 4: Process the ResultSet object.
 			while (rs.next()) {
 				int id = rs.getInt("id");
+				String name = rs.getString("name");
 				String image = rs.getString("image");
 				String brand = rs.getString("brand");
 				String description = rs.getString("description");
@@ -201,7 +202,7 @@ public class LaptopDAO {
 				int money = rs.getInt("price");
 				String price = formatMoney(money);
 				String type = rs.getString("type");
-				product = new product(id, name, money, image, brand, description, quantity, price, type);
+				product.add(new product(id, name, money, image, brand, description, quantity, price, type));
 			}
 		} catch (SQLException e) {
 			printSQLException(e);
