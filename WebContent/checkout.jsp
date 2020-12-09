@@ -24,22 +24,10 @@
 <title>Ashion | Template</title>
 
 <!-- Google Font -->
-<link
-	href="https://fonts.googleapis.com/css2?family=Cookie&display=swap"
-	rel="stylesheet">
-<link
-	href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
-	rel="stylesheet">
 
 <!-- Css Styles -->
-<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-<link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
-<link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
-<link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
-<link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
-<link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
-<link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
-<link rel="stylesheet" href="css/style.css" type="text/css">
+
+<link rel="stylesheet" href="css/style1.css" type="text/css">
 </head>
 
 <body>
@@ -48,116 +36,79 @@
 
 
 	<!-- Checkout Section Begin -->
-	<section class="checkout spad">
-		<div class="container">
-			<h3 style="text-align: center;color: red;margin-bottom: 20px">${message }</h3>
-			<form action="checkout" class="checkout__form" method="post">
-				<div class="row">
-					<div class="col-lg-8">
-						<h5>Customer Information</h5>
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="checkout__form__input">
-									<p>
-										Name <span>*</span>
-									</p>
-									<input type="text" name="name" required="required">
-								</div>
-							</div>
+	<div class="col-6">
+		<h3 style="text-align: center; color: red; margin-bottom: 20px">${message }</h3>
+		<h2 style="text-align: center">Customer Information</h2>
 
-							<div class="col-lg-12">
+		<form action="checkout" method="post">
+			<div class="col-12">
 
-								<div class="checkout__form__input">
-									<p>
-										Address <span>*</span>
-									</p>
-									<input type="text" placeholder="Street Address" name="address" required="required">
-								</div>
-							</div>
-							<div class="col-lg-12">
-								<div class="checkout__form__input">
-									<p>
-										Phone <span>*</span>
-									</p>
-									<input type="text" name="phone" required="required">
-								</div>
-							</div>
+				<input type="text" name="name" required="required"
+					placeholder="Name" value="${fullname }">
+			</div>
+
+			<div class="col-12">
 
 
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="checkout__order">
-							<h5>Your order</h5>
-							<div class="checkout__order__product">
-								<ul>
-									<li><span class="top__text">Product</span> <span
-										class="top__text__right">Total</span></li>
+				<input type="text" placeholder="Street Address" name="address"
+					required="required" value="${address }">
+			</div>
+			<div class="col-12">
 
-									<%
-										order order = (order) session.getAttribute("order");
-									List<item> listItem = new ArrayList();
-									if (order != null) {
-										listItem = order.getListItem();
-									}
-									int total = 0;
-									int i;
-									Locale locale = new Locale("vi", "VN");
-									NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
-									if (listItem.size() > 0) {
-										for (i = 0; i < listItem.size(); i++) {
-									%>
+				<input type="text" name="phone" required="required"
+					placeholder="Phone" value="${phone }">
+			</div>
+	</div>
+	<div class="checkout">
+		<h2>Your order</h2>
+		<h2>Sản phẩm</h2>
 
-									<li>
-										<%
-											out.print(listItem.get(i).getProduct().getName());
-										%> <span> <%
- 	int price = listItem.get(i).getProduct().getMoney() * listItem.get(i).getQuantity();
- total += price;
- out.print(numberFormat.format(price));
- %>
-									</span>
-									</li>
-									<%
-										}
-									}
-									%>
-								</ul>
-							</div>
-							<div class="checkout__order__total">
-								<ul>
-									<li>Total <span> <%
- 	out.print(numberFormat.format(total));
- %>
-									</span></li>
-								</ul>
-							</div>
-
-							<button type="submit" class="site-btn">Place oder</button>
-						</div>
-					</div>
-				</div>
-				<input type="hidden" name="total" value="<%out.print(total);%>">
-			</form>
+		<%
+			order order = (order) session.getAttribute("order");
+		List<item> listItem = new ArrayList();
+		if (order != null) {
+			listItem = order.getListItem();
+		}
+		int total = 0;
+		int i;
+		Locale locale = new Locale("vi", "VN");
+		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+		if (listItem.size() > 0) {
+			for (i = 0; i < listItem.size(); i++) {
+		%>
+		<div class="col-12">
+			<%
+				out.print(listItem.get(i).getProduct().getName());
+			%>
+			<%
+				int price = listItem.get(i).getProduct().getMoney() * listItem.get(i).getQuantity();
+			total += price;
+			out.print(numberFormat.format(price));
+			%>
 		</div>
-	</section>
+
+		<br>
+		<%
+			}
+		}
+		%>
+		<h2>
+			Total
+			<%
+			out.print(numberFormat.format(total));
+		%>
+		</h2>
+
+		<br>
+
+		<button type="submit" class="success">Place oder</button>
+		<input type="hidden" name="total" value="<%out.print(total);%>">
+	</div>
+
+	</form>
+
 	<!-- Checkout Section End -->
 
-
-	<jsp:include page="footer.jsp"></jsp:include>
-
-
-	<!-- Js Plugins -->
-	<script src="js/jquery-3.3.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.magnific-popup.min.js"></script>
-	<script src="js/jquery-ui.min.js"></script>
-	<script src="js/mixitup.min.js"></script>
-	<script src="js/jquery.countdown.min.js"></script>
-	<script src="js/jquery.slicknav.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
-	<script src="js/jquery.nicescroll.min.js"></script>
-	<script src="js/main.js"></script>
 </body>
 
 </html>

@@ -1,6 +1,12 @@
 package laptop.model;
 
-public class payment {
+import java.io.Serializable;
+
+public class payment implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private String phone;

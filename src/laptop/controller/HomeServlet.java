@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import laptop.management.dao.LaptopDAO;
 import laptop.model.product;
@@ -81,8 +82,14 @@ public class HomeServlet extends HttpServlet {
 		request.setAttribute("listProduct3", listProduct3);
 		request.setAttribute("listProduct4", listProduct4);
 		request.setAttribute("listProduct5", listProduct5);
-
+		HttpSession session = request.getSession();
+		if (session.getAttribute("fullname") != null) {
+			request.setAttribute("fullname", session.getAttribute("fullname"));
+		} else {
+			request.setAttribute("fullname", "KHÁCH HÀNG ĐĂNG NHẬP");
+		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
+
 	}
 }
